@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd0131136a34cc442a54f315e662cf1c, type: 3}
+  m_Name: Wild
+  m_EditorClassIdentifier: 
+  obj: {fileID: 6149373522728124984, guid: 3ec762282c40e164ea2f2eed6fec283f, type: 3}
+  wild: 0
+  preferredFood: {fileID: 11400000, guid: 1f8876037f4d0054596b4d606a75a4d5, type: 2}

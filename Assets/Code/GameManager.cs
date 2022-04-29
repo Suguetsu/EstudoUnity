@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
     public void SendScoreHud(int _)
     {
 
-        globalScore = _;
+        globalScore += _;
 
         if (globalScore > 99)
         {

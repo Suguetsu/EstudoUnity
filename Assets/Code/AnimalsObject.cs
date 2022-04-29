@@ -96,7 +96,7 @@ public class AnimalsObject : MonoBehaviour, IDamageable<int>
     {
 
 
-        Debug.Log("ID entrada: " + ID + "id do objeto: " + obj.GetIdFruitScriptable());
+    //    Debug.Log("ID entrada: " + ID + "id do objeto: " + obj.GetIdFruitScriptable());
 
 
         if (ID == obj.GetIdFruitScriptable())

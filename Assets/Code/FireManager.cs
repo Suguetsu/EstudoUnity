@@ -43,6 +43,7 @@ public class FireManager : MonoBehaviour
         iDFoodFire = countObj = lastId = 0;
 
         InputButton.ChangeFoodBtn += SetLastIdFromInput;
+        HudManager.SetFood += SetLastIdFromInput;
 
 
         isFireOn = true;
@@ -52,6 +53,7 @@ public class FireManager : MonoBehaviour
     private void OnDestroy()
     {
         InputButton.ChangeFoodBtn -= SetLastIdFromInput;
+        HudManager.SetFood -= SetLastIdFromInput;
     }
 
     // Update is called once per frame
@@ -106,14 +108,14 @@ public class FireManager : MonoBehaviour
         {
             InstanciaObj(scrip, pos);
 
-   
+
 
         }
         else
         {
 
 
-         
+
 
 
             for (int i = 0; i < pooling.Count; i++)
@@ -198,7 +200,7 @@ public class FireManager : MonoBehaviour
     public void IncreaseIdFood()
     {
 
-        Debug.Log("Adicionado");
+        Debug.Log("adicionei nna lista e aumentei o idfood");
 
         iDFoodFire++;
 
@@ -222,9 +224,11 @@ public class FireManager : MonoBehaviour
                 {
                     lastId = pooling[i].GetIdListPos();
 
+                    Debug.Log("procurei na lista e achei");
 
-                    if(lastId != iDFoodFire) // pode ser removido depois
-                    Debug.LogError(" lastId é: " + lastId + "\n" + " Atualizou com: " + pooling[i].GetIdInstanceLocal());
+
+                    if (lastId != iDFoodFire) // pode ser removido depois
+                        Debug.LogError(" lastId é: " + lastId + "\n" + " Atualizou com: " + pooling[i].GetIdInstanceLocal());
 
 
                 }
@@ -243,6 +247,8 @@ public class FireManager : MonoBehaviour
     public void SetLastIdFromInput(int _)
     {
         // seta o id do botão apertado pra buscar a comida certa
+
+        Debug.Log("Apertei botão e troquei de comida");
         lastId = _;
     }
 

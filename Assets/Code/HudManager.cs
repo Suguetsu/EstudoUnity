@@ -5,6 +5,8 @@ using UnityEngine.UI;
 // reponsável por gerenciar a hud do jogo
 public class HudManager : MonoBehaviour
 {
+    public static event System.Action<int> SetFood;
+
     // Start is called before the first frame update
     [Header("Live Settings")]
     [SerializeField] private GameObject[] livesIcon;
@@ -47,6 +49,32 @@ public class HudManager : MonoBehaviour
         InputButton.Outline -= OutLineBtn;
     }
 
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad0) && buttons.Length > 0)
+        {
+            ChangeButtonInput(0);
+            SetFood?.Invoke(0);
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad1) && buttons.Length > 1)
+        {
+            ChangeButtonInput(1);
+            SetFood?.Invoke(1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad2) && buttons.Length > 2)
+        {
+            ChangeButtonInput(2);
+            SetFood?.Invoke(2);
+        }
+        else if (Input.GetKeyDown(KeyCode.Keypad3) && buttons.Length > 3)
+        {
+            ChangeButtonInput(3);
+            SetFood?.Invoke(3);
+        }
+
+
+    }
     public void ActiveGo(GameObject go)
     {
         go.gameObject.SetActive(!go.activeInHierarchy);
@@ -62,6 +90,10 @@ public class HudManager : MonoBehaviour
         OutLineBtn(buttons[id].transform);
     }
 
+    public void ChangeButtonInput(int idBtn)
+    {
+        OutLineBtn(buttons[idBtn].transform);
+    }
     public void SetScoreLevel(int _score, int _lvl)
     {
         score.text = _score.ToString();
@@ -93,7 +125,7 @@ public class HudManager : MonoBehaviour
         if (count < livesIcon.Length)
             count += _;
 
-        Debug.Log(count + "COUNT");
+       // Debug.Log(count + "COUNT");
     }
 
     public void OutLineBtn(Transform trs)

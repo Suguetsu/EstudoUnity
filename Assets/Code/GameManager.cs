@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-enum PlayerState { live, dead }
+public enum PlayerState { live, dead }
+public enum GameState { homeScreen, game, gameOver }
+
+public delegate void inicialState();
 
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
 
     public static event System.Action GetRandomFruit;
+    public static inicialState gameStarts;
 
 
+    [SerializeField] private GameState gameStatus;
     [SerializeField] private Scriptables[] _itens = new Scriptables[0];
 
     [Header("Score Settings")]
@@ -47,7 +52,37 @@ public class GameManager : MonoBehaviour
 
 
 
-    void Start()
+
+
+
+    public void StartGame()
+    {
+        switch (gameStatus)
+        {
+
+            case GameState.game:
+
+
+                gameStarts += Inicilization;
+                gameStarts();
+
+                break;
+
+            default:
+                gameStatus = GameState.homeScreen;
+
+                gameStarts -= Inicilization;
+                gameStarts += _hud.HomeGameScreen;
+
+                gameStarts();
+
+
+                break;
+
+        }
+    }
+
+    private void Inicilization()
     {
         for (int i = 0; i < wayPointsParent.transform.childCount; i++)
         {
@@ -81,7 +116,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-
+        if (PauseGame()) return;
 
         if (speedAnimals < 0)
         {
@@ -199,7 +234,6 @@ public class GameManager : MonoBehaviour
 
     public void GetInventorySize(int getNumber) => sizeInv = getNumber;
 
-
     public Scriptables DefaultFruit() => _itens[0];
     public void SearchItem(Scriptables food)
     {
@@ -211,6 +245,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
 
 
     #region ScoreSettings
@@ -254,5 +289,16 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    #region HomeScreen
+
+    public GameState GetStatusGame() => gameStatus;
+    public GameState SetStatusGame(GameState _) => gameStatus = _;
+    public bool PauseGame() => gameStatus == GameState.gameOver || gameStatus == GameState.homeScreen;
+
+    #endregion
+
+
+
 
 }

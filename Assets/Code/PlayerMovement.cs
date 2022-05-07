@@ -11,23 +11,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float inBounds;
 
     private CharacterController _char;
+    private GameManager _gm;
 
 
 
     void Start()
     {
         _char = GetComponent<CharacterController>();
+        _gm = FindObjectOfType(typeof(GameManager)) as GameManager;
+
         transform.localPosition = new Vector3(0, 0, pos);
         transform.gameObject.tag = "Player";
 
 
+
+
     }
 
-   
+
 
     // Update is called once per frame
     void Update()
     {
+        if (_gm.PauseGame()) return;
+
         float move = Input.GetAxisRaw("Horizontal");
 
 
@@ -56,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-   
 
-   
+
+
 }

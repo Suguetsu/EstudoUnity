@@ -18,10 +18,25 @@ public class HudManager : MonoBehaviour
     [SerializeField] Text score;
     [SerializeField] Text level;
 
+    [Header("Start Screen Settings")]  // Área responsável por gerenciar a tela de inicialização.
+    [SerializeField] Camera StartCam;
+    [SerializeField] Camera mainCam;
+    [SerializeField] GameObject homeScreen;
+    [SerializeField] GameObject playerScreen;
+    [SerializeField] GameObject[] allHudGame;
+
+    [Header("Tutorial Config")]
+    [SerializeField] GameObject[] tutorialControls;
+
+    [SerializeField] private int countTuto;
+
+
 
     private int count = 0;
 
     private int id;
+
+    private GameManager _gm;
 
     private void OnEnable()
     {
@@ -36,10 +51,13 @@ public class HudManager : MonoBehaviour
 
     void Start()
     {
-
+        _gm = FindObjectOfType(typeof(GameManager)) as GameManager;
 
         Invetory.SendFruitToHud += Changebutton;
         InputButton.Outline += OutLineBtn;
+
+        StarGameHud();
+
 
     }
 
@@ -52,6 +70,8 @@ public class HudManager : MonoBehaviour
 
     public void Update()
     {
+        if (_gm.PauseGame()) return;
+
         if (Input.GetKeyDown(KeyCode.Keypad0) && buttons.Length > 0)
         {
             ChangeButtonInput(0);
@@ -125,7 +145,7 @@ public class HudManager : MonoBehaviour
         if (count < livesIcon.Length)
             count += _;
 
-       // Debug.Log(count + "COUNT");
+        // Debug.Log(count + "COUNT");
     }
 
     public void OutLineBtn(Transform trs)
@@ -136,5 +156,94 @@ public class HudManager : MonoBehaviour
         outLine.transform.localPosition = Vector3.zero;
         outLine.transform.SetAsFirstSibling();
     }
+
+    public void HomeGameScreen()
+    {
+
+        if (_gm.GetStatusGame() == GameState.homeScreen)
+        {
+            mainCam.gameObject.SetActive(false);
+            StartCam.gameObject.SetActive(true);
+            homeScreen.gameObject.SetActive(StartCam.gameObject.activeInHierarchy);
+            playerScreen.SetActive(homeScreen.gameObject.activeInHierarchy);
+
+            for (int i = 0; i < allHudGame.Length; i++)
+            {
+                allHudGame[i].gameObject.SetActive(false);
+            }
+
+
+        }
+        else
+        {
+            mainCam.gameObject.SetActive(true);
+            StartCam.gameObject.SetActive(false);
+            homeScreen.gameObject.SetActive(StartCam.gameObject.activeInHierarchy);
+            playerScreen.SetActive(homeScreen.gameObject.activeInHierarchy);
+
+            for (int i = 0; i < allHudGame.Length; i++)
+            {
+                allHudGame[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
+
+    public void StarGameHud()
+    {
+
+
+        if (countTuto <= 1)
+        {
+            if (countTuto == 0)
+            {
+                tutorialControls[0].gameObject.SetActive(true);
+                HomeGameScreen();
+
+
+
+            }
+            else if (countTuto == 1)
+            {
+
+                tutorialControls[0].gameObject.SetActive(false);
+                tutorialControls[1].gameObject.SetActive(true);
+
+            }
+
+
+
+
+            countTuto++;
+
+
+        }
+        else
+        {
+            tutorialControls[0].gameObject.SetActive(false);
+            tutorialControls[1].gameObject.SetActive(false);
+            tutorialControls[2].gameObject.SetActive(false);
+
+            _gm.SetStatusGame(GameState.game);
+            countTuto = 2;
+
+            HomeGameScreen();
+            _gm.StartGame();
+
+
+
+
+
+        }
+
+
+
+
+
+
+    }
+
+    public void ActiveDesactive(GameObject btn) => btn.gameObject.SetActive(!btn.gameObject.activeInHierarchy);
+
 
 }

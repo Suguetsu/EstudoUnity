@@ -59,8 +59,9 @@ public class FireManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isFiring = (Input.GetKeyDown(KeyCode.Space) && isFireOn);
+        if (_gm.PauseGame()) return;
 
+        isFiring = (Input.GetKeyDown(KeyCode.Space) && isFireOn);
         Fire();
     }
 
